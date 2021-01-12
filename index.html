@@ -65,14 +65,41 @@
       transform-origin: 100%; /* move origin on x-axis fully to the right */
       transform: rotate(90deg); /* facing upwards */
       transition: all 0.05s;
-      transition-timing-function: cubic-bezier(0, 1.25, 0.58, 1);
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); /* for realistic tick */
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
 
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = hours12(now.getHours());
+      secondHand.style.transform = `rotate(${getDegrees(seconds, 60)}deg)`;
+      minuteHand.style.transform = `rotate(${getDegrees(minutes, 60)}deg)`;
+      hourHand.style.transform = `rotate(${getDegrees(hours, 12)}deg)`;
+    }
 
+    // calculate degrees for hand regardless of h/m/s
+    function getDegrees(unit, division) {
+      return (( unit / division ) * 360) + 90; 
+    }
+
+    // converts hours for 24 hour time into 12 hour time
+    function hours12(hours) {
+      if (hours < 12) {
+        return hours;
+      } else {
+        return hours - 12;
+      }
+    }
+
+    setInterval(setDate, 1000);
   </script>
 </body>
 </html>
