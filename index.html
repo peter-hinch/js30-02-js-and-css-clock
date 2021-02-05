@@ -57,13 +57,12 @@
     }
 
     .hand {
-      width: 50%;
-      height: 6px;
+      width: 6px; /* was 50% - changed from tutorial to achieve hand facing 12 */
+      height: 50%; /* was 6px - changed from tutorial to achieve hand facing 12 */
       background: black;
       position: absolute;
-      top: 50%;
-      transform-origin: 100%; /* move origin on x-axis fully to the right */
-      transform: rotate(90deg); /* facing upwards */
+      left: 50%; /* was top: - changed from tutorial to achieve hand facing 12 */
+      transform-origin: 50% 100%; /* was 100% only - y-axis value added to achieve hand facing 12 */
       transition: all 0.05s;
       transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); /* for realistic tick */
     }
@@ -79,24 +78,16 @@
       const now = new Date();
       const seconds = now.getSeconds();
       const minutes = now.getMinutes();
-      const hours = hours12(now.getHours());
-      secondHand.style.transform = `rotate(${getDegrees(seconds, 60)}deg)`;
-      minuteHand.style.transform = `rotate(${getDegrees(minutes, 60)}deg)`;
-      hourHand.style.transform = `rotate(${getDegrees(hours, 12)}deg)`;
+      const hours = now.getHours();
+      secondHand.style.transform = setDegrees(seconds, 60);
+      minuteHand.style.transform = setDegrees(minutes, 60);
+      hourHand.style.transform = setDegrees(hours, 12);
     }
 
     // calculate degrees for hand regardless of h/m/s
-    function getDegrees(unit, division) {
-      return (( unit / division ) * 360) + 90; 
-    }
-
-    // converts hours for 24 hour time into 12 hour time
-    function hours12(hours) {
-      if (hours < 12) {
-        return hours;
-      } else {
-        return hours - 12;
-      }
+    function setDegrees(unit, division) {
+      let angle = unit / division * 360;
+      return `rotate(${angle}deg)`;
     }
 
     setInterval(setDate, 1000);
